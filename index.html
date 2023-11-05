@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Guess The Number Game</title>
+</head>
+<body>
+    <h1>Guess The Number Game</h1>
+    <p>Select a number range and guess:</p>
+    <p>Range: <span id="range_label">1 - 100</span></p>
+    <input type="text" id="range_input" placeholder="Enter range (e.g., 1-100)">
+    <button id="select_range_button">Select Range</button>
+    <br><br>
+    <input type="text" id="input" placeholder="Enter your guess">
+    <button id="check_button">Check</button>
+    <br><br>
+    <p id="result_label"></p>
+
+    <script>
+        let targetNumber = null;
+        let minRange = 1;
+        let maxRange = 100;
+        let attempts = 0;
+
+        document.getElementById('select_range_button').addEventListener('click', function () {
+            const rangeInput = document.getElementById('range_input').value;
+            const range = rangeInput.split('-');
+            if (range.length === 2) {
+                minRange = parseInt(range[0]);
+                maxRange = parseInt(range[1]);
+                document.getElementById('range_label').textContent = `${minRange} - ${maxRange}`;
+                targetNumber = Math.floor(Math.random() * (maxRange - minRange + 1)) + minRange;
+                attempts = 0;
+                document.getElementById('result_label').textContent = 'Range selected. Start guessing!';
+            } else {
+                document.getElementById('result_label').textContent = 'Invalid range format. Enter as "min-max".';
+            }
+        });
+
+        document.getElementById('check_button').addEventListener('click', function () {
+            if (targetNumber === null) {
+                document.getElementById('result_label').textContent = 'Select a number range first.';
+                return;
+            }
+
+            const guessInput = document.getElementById('input').value;
+            const guess = parseInt(guessInput);
+            attempts++;
+
+            if (guess < targetNumber) {
+                document.getElementById('result_label').textContent = `Too low! Attempts: ${attempts}`;
+            } else if (guess > targetNumber) {
+                document.getElementById('result_label').textContent = `Too high! Attempts: ${attempts}`;
+            } else {
+                document.getElementById('result_label').textContent = `Congratulations! You guessed it in ${attempts} attempts.`;
+            }
+        });
+    </script>
+</body>
+</html>
+
